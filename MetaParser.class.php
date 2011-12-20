@@ -1,18 +1,37 @@
 <?php
-/*
-    Sample cases:
-        http://metallo.scripps.edu/
-        http://jobs.businessinsider.com/job/3b9d1c8e1e5e31d4e4fefb4a551b8b90/?d=1&source=site_home
-        http://www.wikipedia.org
-        http://yahoo.com
-        http://twitter.com/wikileaks/status/8920530488926208#s
-        http://veryawesomeworld.com/awesomebook/inside.html
-*/
 
     /**
-     * MetaParser class.
+     * MetaParser
+     *
+     * Parses content for meta and open graph details. Useful when used with a
+     * curling library.
      * 
-     * @todo add support paths leading with '//' (aka. use same scheme)
+     * @see     https://github.com/onassar/PHP-Curler
+     * @author  Oliver Nassar <onassar@gmail.com>
+     * @todo    add support for paths leading with '//' (aka. use same scheme)
+     * @notes   The following urls provide good examples of the parsing engine:
+     *          http://www.bbc.com/
+     *          http://www.nytimes.com/
+     *          http://techcrunch.com/
+     *          http://metallo.scripps.edu/
+     *          http://jobs.businessinsider.com/job/3b9d1c8e1e5e31d4e4fefb4a551b8b90/?d=1&source=site_home
+     *          http://www.wikipedia.org
+     *          http://yahoo.com
+     *          http://twitter.com/wikileaks/status/8920530488926208#s
+     *          http://veryawesomeworld.com/awesomebook/inside.html
+     * @example
+     * <code>
+     *     // booting
+     *     require_once APP . '/vendors/PHP-Curler/Curler.class.php';
+     *     require_once APP . '/vendors/PHP-MetaParser/MetaParser.class.php';
+     *
+     *     // curling
+     *     $curler = (new Curler());
+     *     $url = 'http://www.bbc.com/';
+     *     $body = $curler->get($url);
+     *     $parser = (new MetaParser($body, $url));
+     *     print_r($parser->getDetails());
+     * <code>
      */
     class MetaParser
     {
@@ -228,7 +247,8 @@
         {
             // generate default
             $parsed = parse_url($this->_url);
-            $default = ($parsed['scheme']) . '://' . ($parsed['host']) . '/favicon.ico';
+            $default = ($parsed['scheme']) . '://' . ($parsed['host']) .
+                '/favicon.ico';
 
             // get the page links (icon attribute value leading)
             preg_match_all(
@@ -272,7 +292,11 @@
         private function _parseImages()
         {
             // get the page images
-            preg_match_all('/<img[^*]*src=(\'|")(.+)\1/imU', $this->_body, $images);
+            preg_match_all(
+                '/<img[^*]*src=(\'|")(.+)\1/imU',
+                $this->_body,
+                $images
+            );
             if (empty($images[2])) {
                 return array();
             }
@@ -328,7 +352,8 @@
         {
             // get the page meta-tag (name attribute leading)
             preg_match_all(
-                '/<meta.+' . ($attr) . '=(\'|")(\bdc\.\b)?\b' . ($value) . '\b\1.+content=(\'|")(.*)\3/imU',
+                '/<meta.+' . ($attr) . '=(\'|")(\bdc\.\b)?\b' .
+                ($value) . '\b\1.+content=(\'|")(.*)\3/imU',
                 $this->_body,
                 $tags
             );
@@ -338,7 +363,8 @@
 
                 // get the page meta-tag (name attribute trailing)
                 preg_match_all(
-                    '/<meta.+content=(\'|")(.*)\1.+' . ($attr) . '=(\'|")(\bdc\.\b)?\b' . ($value) . '\b\3.+/imU',
+                    '/<meta.+content=(\'|")(.*)\1.+' . ($attr) .
+                    '=(\'|")(\bdc\.\b)?\b' . ($value) . '\b\3.+/imU',
                     $this->_body,
                     $tags
                 );
@@ -566,5 +592,3 @@
             return $this->_url;
         }
     }
-
-?>
