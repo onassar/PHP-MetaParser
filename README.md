@@ -3,10 +3,14 @@ PHP-MetaParser
 
 Inspired by Facebook&#039;s link sharing flow, this abstractly accessed class
 **attempts** to parse a document (x/html), and retrieve it&#039;s
-meta-information.
+meta-information. I emphasize attempts, as x/html documents are exceptionally
+tough to parse, and data is often lost due to the content structuring delivered.
+
+This class, as seen by the example below, works very well when coupled with the
+[PHP-Curler](https://github.com/onassar/PHP-Curler) class.
 
 As that sounds, it returns the following kind of data (using
-[http://www.bbc.com/](http://www.bbc.com/) as an example:
+[http://www.bbc.com/](http://www.bbc.com/) as an example):
 
     Array
     (
@@ -46,10 +50,6 @@ As that sounds, it returns the following kind of data (using
         [title] => BBC - Homepage
         [url] => http://www.bbc.com/
     )
-
-
-This class, as seen by the example below, works very well when coupled with the
-[PHP-Curler](https://github.com/onassar/PHP-Curler) class.
 
 ### Parsing Example
 
