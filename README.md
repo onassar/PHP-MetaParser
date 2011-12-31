@@ -7,7 +7,7 @@ meta-information. I emphasize attempts, as x/html documents are exceptionally
 tough to parse, and data is often lost due to the content structuring delivered.
 
 This class, as seen by the example below, works very well when coupled with the
-[PHP-Curler](https://github.com/onassar/PHP-Curler) class.
+[PHP-Curler](https://github.com/onassar/PHP-Curler) class.  
 The following is an example of how data is returned, using
 [http://www.bbc.com/](http://www.bbc.com/) as an example:
 
