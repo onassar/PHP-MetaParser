@@ -52,6 +52,12 @@ The following is an example of how data is returned, using
 
 ### Parsing Example
 
+The following code uses the [PHP-Curler](https://github.com/onassar/PHP-Curler)
+class to *curl* the BBC site, store it&#039;s content, and pass it along to a
+**MetaParser** instance. The URL is passed along as well to ensure any paths
+(favicons, images) are rewritten relative to the path of the document that was
+parsed.
+
     // booting
     require_once APP . '/vendors/PHP-Curler/Curler.class.php';
     require_once APP . '/vendors/PHP-MetaParser/MetaParser.class.php';
