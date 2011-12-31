@@ -38,7 +38,7 @@
         /**
          * _parsed
          * 
-         * @var array
+         * @var    array
          * @access protected
          */
         protected $_parsed;
@@ -46,7 +46,7 @@
         /**
          * _body.
          * 
-         * @var string
+         * @var    string
          * @access protected
          */
         protected $_body;
@@ -54,17 +54,17 @@
         /**
          * _url
          * 
-         * @var string
+         * @var    string
          * @access protected
          */
         protected $_url;
 
         /**
-         * __construct function.
+         * __construct
          * 
          * @access public
-         * @param string $body
-         * @param string $url
+         * @param  string $body
+         * @param  string $url
          * @return void
          */
         public function __construct($body, $url)
@@ -74,10 +74,10 @@
         }
 
         /**
-         * _encode function.
+         * _encode
          * 
          * @access protected
-         * @param mixed $mixed
+         * @param  mixed $mixed
          * @return array
          */
         protected function _encode($mixed)
@@ -92,12 +92,12 @@
         }
 
         /**
-         * resolveFullPath function.
+         * resolveFullPath
          * 
-         * @see http://ca3.php.net/manual/en/function.realpath.php#86384
+         * @see    http://ca3.php.net/manual/en/function.realpath.php#86384
          * @access protected
-         * @param string $addr
-         * @param string $base
+         * @param  string $addr
+         * @param  string $base
          * @return string
          */
         protected function _resolveFullPath($addr, $base)
@@ -153,9 +153,9 @@
         }
 
         /**
-         * _parseBase function.
+         * _parseBase
          * 
-         * @todo find url's that have various base values, and test them
+         * @todo   find url's that have various base values, and test them
          * @access private
          * @return string
          */
@@ -214,14 +214,14 @@
         }
 
         /**
-         * _parseDescription function.
+         * _parseDescription
          * 
-         * @note not checking the index of the regular expression that
-         *     corresponds to the actual keywords in order to ensure that an
-         *     actual meta tag for keywords was specified. This way I can return
-         *     false if the meta tag isn't there at all
-         * @note due to a bug, the second regex does *not* support newlines in
-         *     the meta tag content attribute values
+         * @notes  not checking the index of the regular expression that
+         *         corresponds to the actual keywords in order to ensure that an
+         *         actual meta tag for keywords was specified. This way I can
+         *         return false if the meta tag isn't there at all
+         *         due to a bug, the second regex does *not* support newlines in
+         *         the meta tag content attribute values
          * @access private
          * @return string
          */
@@ -238,7 +238,7 @@
         }
 
         /**
-         * _parseFavicon function.
+         * _parseFavicon
          * 
          * @access private
          * @return string
@@ -282,10 +282,10 @@
         }
 
         /**
-         * _parseImages function.
+         * _parseImages
          * 
-         * @note first expression capture relates to [^*]* rather than .* as
-         *     this was excluding new lines
+         * @notes  first expression capture relates to [^*]* rather than .* as
+         *         this was excluding new lines
          * @access private
          * @return array
          */
@@ -316,12 +316,12 @@
         }
 
         /**
-         * _parseKeywords function.
+         * _parseKeywords
          * 
-         * @note not checking the index of the regular expression that
-         *     corresponds to the actual keywords in order to ensure that an
-         *     actual meta tag for keywords was specified. This way I can return
-         *     false if the meta tag isn't there at all
+         * @notes  not checking the index of the regular expression that
+         *         corresponds to the actual keywords in order to ensure that an
+         *         actual meta tag for keywords was specified. This way I can
+         *         return false if the meta tag isn't there at all
          * @access private
          * @return array
          */
@@ -342,10 +342,10 @@
         }
 
         /**
-         * _parseMetaTag function.
+         * _parseMetaTag
          * 
          * @access private
-         * @param string $value
+         * @param  string $value
          * @return false|string
          */
         private function _parseMetaTag($value, $attr = 'name')
@@ -383,7 +383,7 @@
         }
 
         /**
-         * _parseOpenGraphKeys function.
+         * _parseOpenGraphKeys
          * 
          * @access protected
          * @return array
@@ -395,7 +395,7 @@
         }
 
         /**
-         * _parseTitle function.
+         * _parseTitle
          * 
          * @access private
          * @return string
@@ -413,10 +413,10 @@
         }
 
         /**
-         * getBase function.
+         * getBase
          * 
-         * @note do not need to check for false value after _parseFavicon as
-         *     default will always be returned (eg. domain.com/favicon.ico)
+         * @notes  do not need to check for false value after _parseFavicon as
+         *         default will always be returned (eg. domain.com/favicon.ico)
          * @access public
          * @return false|string
          */
@@ -434,7 +434,7 @@
         }
 
         /**
-         * getDescription function.
+         * getDescription
          * 
          * @access public
          * @return false|string
@@ -457,7 +457,7 @@
         }
 
         /**
-         * getDetails function.
+         * getDetails
          * 
          * @access public
          * @return array
@@ -480,10 +480,10 @@
         }
 
         /**
-         * getFavicon function.
+         * getFavicon
          * 
-         * @note do not need to check for false value after _parseFavicon as
-         *     default will always be returned (eg. domain.com/favicon.ico)
+         * @notes  do not need to check for false value after _parseFavicon as
+         *         default will always be returned (eg. domain.com/favicon.ico)
          * @access public
          * @return false|string
          */
@@ -501,7 +501,7 @@
         }
 
         /**
-         * getImages function.
+         * getImages
          * 
          * @access public
          * @return false|array
@@ -520,7 +520,7 @@
         }
 
         /**
-         * getKeywords function.
+         * getKeywords
          * 
          * @access public
          * @return false|array
@@ -543,7 +543,7 @@
         }
 
         /**
-         * getOpenGraph function.
+         * getOpenGraph
          * 
          * @access public
          * @return array
@@ -559,7 +559,7 @@
         }
 
         /**
-         * getTitle function.
+         * getTitle
          * 
          * @access public
          * @return false|string
@@ -582,7 +582,7 @@
         }
 
         /**
-         * getUrl function.
+         * getUrl
          * 
          * @access public
          * @return string
