@@ -58,6 +58,9 @@ class to *curl* the BBC site, store it&#039;s content, and pass it along to a
 (favicons, images) are rewritten relative to the path of the document that was
 parsed.
 
+``` php
+<?php
+
     // booting
     require_once APP . '/vendors/PHP-Curler/Curler.class.php';
     require_once APP . '/vendors/PHP-MetaParser/MetaParser.class.php';
@@ -68,3 +71,5 @@ parsed.
     $body = $curler->get($url);
     $parser = (new MetaParser($body, $url));
     print_r($parser->getDetails());
+
+```
