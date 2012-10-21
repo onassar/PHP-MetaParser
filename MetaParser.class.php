@@ -403,7 +403,8 @@
         private function _parseTitle()
         {
             // get the page's title
-            preg_match('/<title[^>]*>([^<]+)<\/title>/i', $this->_body, $titles);
+//            preg_match('/<title[^>]*>([^<]+)<\/title>/i', $this->_body, $titles);
+            preg_match('/<title[^>]*>([^<]+)<\/title>/im', $this->_body, $titles);
             if (empty($titles)) {
                 return false;
             }
