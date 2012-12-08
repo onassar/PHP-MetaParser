@@ -6,7 +6,7 @@
      * Parses content for meta and open graph details. Useful when used with a
      * curling library.
      * 
-     * @see     https://github.com/onassar/PHP-Curler
+     * @see     <https://github.com/onassar/PHP-Curler>
      * @author  Oliver Nassar <onassar@gmail.com>
      * @todo    add support for paths leading with '//' (aka. use same scheme)
      * @notes   The following urls provide good examples of the parsing engine:
