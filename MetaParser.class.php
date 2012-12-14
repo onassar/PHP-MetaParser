@@ -74,24 +74,6 @@
         }
 
         /**
-         * _encode
-         * 
-         * @access protected
-         * @param  mixed $mixed
-         * @return array
-         */
-        protected function _encode($mixed)
-        {
-            if (is_array($mixed)) {
-                foreach ($mixed as $key => $value) {
-                    $mixed[$key] = $this->_encode($value);
-                }
-                return $mixed;
-            }
-            return htmlentities($mixed, ENT_QUOTES, 'UTF-8');
-        }
-
-        /**
          * resolveFullPath
          * 
          * @see    http://ca3.php.net/manual/en/function.realpath.php#86384
@@ -435,6 +417,36 @@
         }
 
         /**
+         * getCharset
+         * 
+         * Returns the charset defined in the document, which may or may not be
+         * the charset that is rendered by the browser. This is because
+         * charsets passed from a server directive supercede those defined in
+         * the document.
+         * 
+         * @see    <http://stackoverflow.com/questions/3458217/how-to-use-regular-expression-to-match-the-charset-string-in-html>
+         * @access public
+         * @return false|string
+         */
+        public function getCharset()
+        {
+            // return charset found, if any
+            if (isset($this->_parsed['charset'])) {
+                return $this->_parsed['charset'];
+            }
+
+            // match the meta tag
+            $pattern = '#<meta(?!\s*(?:name|value)\s*=)[^>]*?charset\s*=[\s"\']*([^\s"\'/>]*)#';
+            $matches = array();
+            preg_match($pattern, $this->_body, $matches);
+            $this->_parsed['charset'] = false;// default
+            if (isset($matches[1])) {
+                $this->_parsed['charset'] = $matches[1];
+            }
+            return $this->_parsed['charset'];
+        }
+
+        /**
          * getDescription
          * 
          * @access public
@@ -452,7 +464,6 @@
             if ($description === false) {
                 return false;
             }
-            $description = $this->_encode($description, false);
             $this->_parsed['description'] = $description;
             return $description;
         }
@@ -468,6 +479,7 @@
             // return relevant meta data
             return array(
                 'base' => $this->getBase(),
+                'charset' => $this->getCharset(),
                 'favicon' => $this->getFavicon(),
                 'meta' => array(
                     'description' => $this->getDescription(),
@@ -538,7 +550,6 @@
             if ($keywords === false) {
                 return false;
             }
-            $keywords = $this->_encode($keywords, false);
             $this->_parsed['keywords'] = $keywords;
             return $keywords;
         }
@@ -577,7 +588,6 @@
             if ($title === false) {
                 return false;
             }
-            $title = $this->_encode($title, false);
             $this->_parsed['title'] = $title;
             return $title;
         }
