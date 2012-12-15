@@ -62,9 +62,12 @@
         /**
          * __construct
          * 
+         * Requires the content body and url to be provided. The url is useful
+         * to generate relative paths for images, etc.
+         * 
          * @access public
-         * @param  string $body
-         * @param  string $url
+         * @param  String $body
+         * @param  String $url
          * @return void
          */
         public function __construct($body, $url)
@@ -193,6 +196,28 @@
                 return ($resolved) . '/';
             }
             return $resolved;
+        }
+
+        /**
+         * _parseCharset
+         * 
+         * @access private
+         * @return String
+         */
+        private function _parseCharset()
+        {
+            // get the page's charset (defined as a meta tag)
+            preg_match(
+                '#<meta(?!\s*(?:name|value)\s*=)[^>]*?charset\s*=[\s"\']*([^\s"\'/>]*)#i',
+                $this->_body,
+                $charset
+            );
+            if (empty($charset)) {
+                return false;
+            }
+
+            // return charset found
+            return trim(array_pop($charset));
         }
 
         /**
@@ -385,7 +410,7 @@
         private function _parseTitle()
         {
             // get the page's title
-//            preg_match('/<title[^>]*>([^<]+)<\/title>/i', $this->_body, $titles);
+            // preg_match('/<title[^>]*>([^<]+)<\/title>/i', $this->_body, $titles);
             preg_match('/<title[^>]*>([^<]+)<\/title>/im', $this->_body, $titles);
             if (empty($titles)) {
                 return false;
@@ -435,15 +460,13 @@
                 return $this->_parsed['charset'];
             }
 
-            // match the meta tag
-            $pattern = '#<meta(?!\s*(?:name|value)\s*=)[^>]*?charset\s*=[\s"\']*([^\s"\'/>]*)#';
-            $matches = array();
-            preg_match($pattern, $this->_body, $matches);
-            $this->_parsed['charset'] = false;// default
-            if (isset($matches[1])) {
-                $this->_parsed['charset'] = $matches[1];
+            // parse charset/return
+            $charset = $this->_parseCharset();
+            if ($charset === false) {
+                return false;
             }
-            return $this->_parsed['charset'];
+            $this->_parsed['charset'] = $charset;
+            return $charset;
         }
 
         /**
