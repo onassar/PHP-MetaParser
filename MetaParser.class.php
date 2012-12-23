@@ -217,7 +217,10 @@
             }
 
             // return charset found
-            return trim(array_pop($charset));
+            $charset = array_pop($charset);
+            $charset = strtolower($charset);
+            $charset = trim($charset);
+            return $charset;
         }
 
         /**
