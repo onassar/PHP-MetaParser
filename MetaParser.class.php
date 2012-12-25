@@ -593,6 +593,14 @@
             foreach ($keys as $key) {
                 $graph[$key] = $this->_parseMetaTag('og:' . ($key), 'property');
             }
+
+            // resolve path to open graph image, if found
+            if (in_array('image', $keys)) {
+                $graph['imagePath'] = $this->_resolveFullPath(
+                    $graph['image'],
+                    $this->getBase()
+                );
+            }
             return $graph;
         }
 
