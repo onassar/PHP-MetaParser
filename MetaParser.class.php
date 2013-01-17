@@ -220,6 +220,9 @@
             $charset = array_pop($charset);
             $charset = strtolower($charset);
             $charset = trim($charset);
+            if ($charset === 'utf8') {
+                return 'utf-8';
+            }
             return $charset;
         }
 
