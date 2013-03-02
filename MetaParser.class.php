@@ -403,7 +403,7 @@
          */
         protected function _parseOpenGraphKeys()
         {
-            preg_match_all('/([\'|"]{1})og:(.{1,10})\1/', $this->_body, $keys);
+            preg_match_all('/([\'|"]{1})og:([a-zA-Z0-9\-:_]{1,25})\1/', $this->_body, $keys);
             return array_pop($keys);
         }
 
