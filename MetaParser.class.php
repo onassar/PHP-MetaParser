@@ -357,11 +357,11 @@
         /**
          * _parseMetaTag
          * 
-         * @access private
+         * @access protected
          * @param  string $value
          * @return false|string
          */
-        private function _parseMetaTag($value, $attr = 'name')
+        protected function _parseMetaTag($value, $attr = 'name')
         {
             // get the page meta-tag (name attribute leading)
             preg_match_all(
