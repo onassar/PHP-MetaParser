@@ -406,6 +406,18 @@
             preg_match_all('/([\'|"]{1})og:([a-zA-Z0-9\-:_]{1,25})\1/', $this->_body, $keys);
             return array_pop($keys);
         }
+		
+        /**
+         * _parseTwitterCard
+         * 
+         * @access protected
+         * @return array
+         */
+        protected function _parseTwitterCard()
+        {
+            preg_match_all('/([\'|"]{1})twitter:([a-zA-Z0-9\-:_]{1,25})\1/', $this->_body, $keys);
+            return array_pop($keys);
+        }
 
         /**
          * _parseTitle
@@ -516,6 +528,7 @@
                 ),
                 'images' => $this->getImages(),
                 'openGraph' => $this->getOpenGraph(),
+				'twitterCard' => $this->getTwitterCard(),
                 'title' => $this->getTitle(),
                 'url' => $this->getUrl()
             );
@@ -605,6 +618,23 @@
                 );
             }
             return $graph;
+        }
+		
+        /**
+         * getTwitterCard
+         * 
+         * @access public
+         * @return array
+         */
+        public function getTwitterCard()
+        {
+            $card = array();
+            $keys = $this->_parseTwitterCard();
+            foreach ($keys as $key) {
+                $card[$key] = $this->_parseMetaTag('twitter:' . ($key), 'property');
+            }
+
+            return $card;
         }
 
         /**
