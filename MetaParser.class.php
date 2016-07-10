@@ -420,6 +420,18 @@
         }
 
         /**
+         * _parseFacebookCard
+         * 
+         * @access protected
+         * @return array
+         */
+        protected function _parseFacebookCard()
+        {
+            preg_match_all('/([\'|"]{1})fb:([a-zA-Z0-9\-:_]{1,25})\1/', $this->_body, $keys);
+            return array_pop($keys);
+        }		
+		
+        /**
          * _parseTitle
          * 
          * @access private
@@ -529,6 +541,7 @@
                 'images' => $this->getImages(),
                 'openGraph' => $this->getOpenGraph(),
 				'twitterCard' => $this->getTwitterCard(),
+				'facebookCard' => $this->getFacebookCard(),
                 'title' => $this->getTitle(),
                 'url' => $this->getUrl()
             );
@@ -632,6 +645,23 @@
             $keys = $this->_parseTwitterCard();
             foreach ($keys as $key) {
                 $card[$key] = $this->_parseMetaTag('twitter:' . ($key), 'property');
+            }
+
+            return $card;
+        }
+		
+        /**
+         * getFacebookCard
+         * 
+         * @access public
+         * @return array
+         */
+        public function getFacebookCard()
+        {
+            $card = array();
+            $keys = $this->_parseFacebookCard();
+            foreach ($keys as $key) {
+                $card[$key] = $this->_parseMetaTag('fb:' . ($key), 'property');
             }
 
             return $card;
