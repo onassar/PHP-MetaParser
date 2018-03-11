@@ -422,17 +422,29 @@
                 'instagram' => 'instagram.com',
                 'pinterest' => 'pinterest.com'
             );
+            $exemptions = array(
+                'facebook' => array(),
+                'twitter' => array(),
+                'instagram' => array(),
+                'pinterest' => array('pin')
+            );
             $host = $hosts[$network];
             $host = str_replace('.', '\.', $host);
-            $pattern = '/href="[^"]+' . ($host) . '[\\\]?\/([^"\?\#\/]+)/';
+            $pattern = '/href=(\'|").+' . ($host) . '\/([^"\'\?\#\/]+)\1/U';
             preg_match($pattern, $this->_body, $matches);
             if (count($matches) > 0) {
-                return array_pop($matches);
+                $id = array_pop($matches);
+                if (in_array($id, $exemptions[$network]) === false) {
+                    return $id;
+                }
             }
-            $pattern = '/' . ($host) . '\/([a-zA-Z0-9\-\_\.]+)/';
+            $pattern = '/.+' . ($host) . '\/([^"\'\?\#\/]+)/';
             preg_match($pattern, $this->_body, $matches);
             if (count($matches) > 0) {
-                return array_pop($matches);
+                $id = array_pop($matches);
+                if (in_array($id, $exemptions[$network]) === false) {
+                    return $id;
+                }
             }
             return false;
         }
