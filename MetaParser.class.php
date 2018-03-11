@@ -26,10 +26,10 @@
      *     require_once APP . '/vendors/PHP-MetaParser/MetaParser.class.php';
      *
      *     // curling
-     *     $curler = (new Curler());
+     *     $curler = new Curler();
      *     $url = 'http://www.bbc.com/';
-     *     $body = $curler->get($url);
-     *     $parser = (new MetaParser($body, $url));
+     *     $content = $curler->get($url);
+     *     $parser = new MetaParser($content, $url);
      *     print_r($parser->getDetails());
      * <code>
      */
@@ -516,6 +516,7 @@
                 ),
                 'images' => $this->getImages(),
                 'openGraph' => $this->getOpenGraph(),
+                'social' => $this->getSocial(),
                 'title' => $this->getTitle(),
                 'url' => $this->getUrl()
             );
@@ -605,6 +606,66 @@
                 );
             }
             return $graph;
+        }
+
+        /**
+         * _parseSocialNetwork
+         * 
+         * @access public
+         * @param  string $network
+         * @return string|false
+         */
+        public function _parseSocialNetwork($network)
+        {
+            $hosts = array(
+                'facebook' => 'facebook.com',
+                'twitter' => 'twitter.com',
+                'instagram' => 'instagram.com',
+                'pinterest' => 'pinterest.com'
+            );
+            $host = $hosts[$network];
+            $host = str_replace('.', '\.', $host);
+            $pattern = '/href="[^"]+' . ($host) . '[\\\]?\/([^"\?\#\/]+)/';
+            preg_match($pattern, $this->_body, $matches);
+            if (count($matches) > 0) {
+                return array_pop($matches);
+            }
+            return false;
+        }
+
+        /**
+         * _parseYouTubeChannel
+         * 
+         * @access public
+         * @return string|false
+         */
+        public function _parseYouTubeChannel()
+        {
+            $host = 'youtube.com';
+            $host = str_replace('.', '\.', $host);
+            $pattern = '/href="[^"]+' . ($host) . '\/channel[\\\]?\/([^"\?\#\/]+)/';
+            preg_match($pattern, $this->_body, $matches);
+            if (count($matches) > 0) {
+                return array_pop($matches);
+            }
+            return false;
+        }
+
+        /**
+         * getSocial
+         * 
+         * @access public
+         * @return array
+         */
+        public function getSocial()
+        {
+            return array(
+                'facebook' => $this->_parseSocialNetwork('facebook'),
+                'twitter' => $this->_parseSocialNetwork('twitter'),
+                'instagram' => $this->_parseSocialNetwork('instagram'),
+                'pinterest' => $this->_parseSocialNetwork('pinterest'),
+                'youTube' => $this->_parseYouTubeChannel()
+            );
         }
 
         /**
