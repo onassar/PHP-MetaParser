@@ -88,7 +88,7 @@
         protected function _resolveFullPath($addr, $base)
         {
             // empty address provided
-            if (empty($addr)) {
+            if (empty($addr) === true) {
                 return $base;
             }
 
@@ -128,7 +128,7 @@
 
             // add last non-empty sub-directory as tail
             $tail = array_pop($pieces['addr']);
-            if (!empty($tail)) {
+            if (empty($tail) === false) {
                 $replacements[] = $tail;
             }
 
@@ -166,7 +166,7 @@
             $path = preg_replace('/[^\/]*$/U', '', $path);
 
             // no base tags found
-            if (empty($bases[2])) {
+            if (empty($bases[2]) === true) {
                 return $path;
             }
 
@@ -212,7 +212,7 @@
                 $this->_body,
                 $charset
             );
-            if (empty($charset)) {
+            if (empty($charset) === true) {
                 return false;
             }
 
@@ -269,7 +269,7 @@
                 $this->_body,
                 $favicons
             );
-            if (empty($favicons[3])) {
+            if (empty($favicons[3]) === true) {
 
                 // get the page links (icon attribute value trailing)
                 preg_match_all(
@@ -279,7 +279,7 @@
                 );
 
                 // no favicon found
-                if (empty($favicons[2])) {
+                if (empty($favicons[2]) === true) {
                     return $default;
                 }
                 $favicon = array_pop($favicons[2]);
@@ -310,7 +310,7 @@
                 $this->_body,
                 $images
             );
-            if (empty($images[2])) {
+            if (empty($images[2]) === true) {
                 return array();
             }
 
@@ -372,7 +372,7 @@
             );
 
             // meta tag not found (not that it's empty, but not-found)
-            if (empty($tags[3])) {
+            if (empty($tags[3]) === true) {
 
                 // get the page meta-tag (name attribute trailing)
                 preg_match_all(
@@ -383,7 +383,7 @@
                 );
 
                 // no meta-tag found
-                if (empty($tags[3])) {
+                if (empty($tags[3]) === true) {
                     return false;
                 }
 
@@ -408,6 +408,36 @@
         }
 
         /**
+         * _parseSocialNetwork
+         * 
+         * @access public
+         * @param  string $network
+         * @return string|false
+         */
+        public function _parseSocialNetwork($network)
+        {
+            $hosts = array(
+                'facebook' => 'facebook.com',
+                'twitter' => 'twitter.com',
+                'instagram' => 'instagram.com',
+                'pinterest' => 'pinterest.com'
+            );
+            $host = $hosts[$network];
+            $host = str_replace('.', '\.', $host);
+            $pattern = '/href="[^"]+' . ($host) . '[\\\]?\/([^"\?\#\/]+)/';
+            preg_match($pattern, $this->_body, $matches);
+            if (count($matches) > 0) {
+                return array_pop($matches);
+            }
+            $pattern = '/' . ($host) . '\/([a-zA-Z0-9\-\_\.]+)/';
+            preg_match($pattern, $this->_body, $matches);
+            if (count($matches) > 0) {
+                return array_pop($matches);
+            }
+            return false;
+        }
+
+        /**
          * _parseTitle
          * 
          * @access private
@@ -418,12 +448,30 @@
             // get the page's title
             // preg_match('/<title[^>]*>([^<]+)<\/title>/i', $this->_body, $titles);
             preg_match('/<title[^>]*>([^<]+)<\/title>/im', $this->_body, $titles);
-            if (empty($titles)) {
+            if (empty($titles) === true) {
                 return false;
             }
 
             // return title found
             return trim(array_pop($titles));
+        }
+
+        /**
+         * _parseYouTubeChannel
+         * 
+         * @access public
+         * @return string|false
+         */
+        public function _parseYouTubeChannel()
+        {
+            $host = 'youtube.com';
+            $host = str_replace('.', '\.', $host);
+            $pattern = '/href="[^"]+' . ($host) . '\/channel[\\\]?\/([^"\?\#\/]+)/';
+            preg_match($pattern, $this->_body, $matches);
+            if (count($matches) > 0) {
+                return array_pop($matches);
+            }
+            return false;
         }
 
         /**
@@ -606,49 +654,6 @@
                 );
             }
             return $graph;
-        }
-
-        /**
-         * _parseSocialNetwork
-         * 
-         * @access public
-         * @param  string $network
-         * @return string|false
-         */
-        public function _parseSocialNetwork($network)
-        {
-            $hosts = array(
-                'facebook' => 'facebook.com',
-                'twitter' => 'twitter.com',
-                'instagram' => 'instagram.com',
-                'pinterest' => 'pinterest.com'
-            );
-            $host = $hosts[$network];
-            $host = str_replace('.', '\.', $host);
-            $pattern = '/href="[^"]+' . ($host) . '[\\\]?\/([^"\?\#\/]+)/';
-            preg_match($pattern, $this->_body, $matches);
-            if (count($matches) > 0) {
-                return array_pop($matches);
-            }
-            return false;
-        }
-
-        /**
-         * _parseYouTubeChannel
-         * 
-         * @access public
-         * @return string|false
-         */
-        public function _parseYouTubeChannel()
-        {
-            $host = 'youtube.com';
-            $host = str_replace('.', '\.', $host);
-            $pattern = '/href="[^"]+' . ($host) . '\/channel[\\\]?\/([^"\?\#\/]+)/';
-            preg_match($pattern, $this->_body, $matches);
-            if (count($matches) > 0) {
-                return array_pop($matches);
-            }
-            return false;
         }
 
         /**
