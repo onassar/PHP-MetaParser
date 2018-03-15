@@ -68,10 +68,10 @@ parsed.
     require_once APP . '/vendors/PHP-MetaParser/MetaParser.class.php';
     
     // curling
-    $curler = (new Curler());
+    $curler = new Curler();
     $url = 'http://www.bbc.com/';
     $body = $curler->get($url);
-    $parser = (new MetaParser($body, $url));
+    $parser = new MetaParser($body, $url);
     print_r($parser->getDetails());
 
 ```
