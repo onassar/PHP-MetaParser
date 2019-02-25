@@ -578,7 +578,7 @@
                 'openGraph' => $this->getOpenGraph(),
                 'social' => $this->getSocial(),
                 'title' => $this->getTitle(),
-                'url' => $this->getUrl()
+                'url' => $this->getURL()
             );
         }
 
@@ -708,12 +708,12 @@
         }
 
         /**
-         * getUrl
+         * getURL
          * 
          * @access public
          * @return string
          */
-        public function getUrl()
+        public function getURL()
         {
             return $this->_url;
         }
